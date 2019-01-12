@@ -1,7 +1,9 @@
-package main 
+package main
 
-import ( "fmt"
-		 "math")
+import (
+	"fmt"
+	"math"
+)
 
 const s = "constant"
 
