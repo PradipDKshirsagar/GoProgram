@@ -7,6 +7,7 @@ import (
 
 const s = "constant"
 
+
 func main() {
 	fmt.Println("s = ", s)
 
