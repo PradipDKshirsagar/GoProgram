@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"GoProgram/Hangman/hangman"
+	"GoProgram/HANGMAN/hangman"
 )
 
 func main() {

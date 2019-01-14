@@ -4,12 +4,12 @@ import ("strings"
 		"fmt"
 		"time" 
 		"math/rand"
-		"GoProgram/Hangman/history"
-		"GoProgram/Hangman/player"
+		"GoProgram/HANGMAN/history"
+		"GoProgram/HANGMAN/player"
 		)
 
-var h = map[history.Game]string{}
-var m = map[player.Player]string{}
+var GameHistroy = map[history.Game]string{}
+var PlayerGame = map[player.Player]string{}
 
 func checkInputLetter(inputLetter []string, letter string) bool {
 	for _, x :=range inputLetter {
@@ -25,21 +25,28 @@ func replaceAtIndex(str string, letter string, index int) string {
 }
 
 func hangman(player player.Player, word string) (string){
-	priUser := word 
+	showToUser := ""
 	
 	fmt.Println("Guess the Word ", player.Name, " :")
 	fmt.Print("Word is ")
 
-	// TODO: update logic
-	for i := range word {
-		priUser = strings.Replace(priUser, string(priUser[i]), "_", 1)
+	
+	//DONE// TODO: update logic
+	/*for i := range word {
+		showToUser = strings.Replace(showToUser, string(showToUser[i]), "_", 1)
+	}*/
+
+	for i, length := 0, len(word) ; i < length ; i++ {
+		showToUser += "_"
 	}
-	fmt.Println(priUser)
+
+	fmt.Println(showToUser)
 	
 	letter := ""
 	var inputLetter []string
 
-	//try to find word
+	// try to find word
+
 	// TODO: use viper to pick this up from config file
 	for chance := 6; chance > 0;  {
 		fmt.Println("Enter Letter :")
@@ -50,8 +57,8 @@ func hangman(player player.Player, word string) (string){
 			cnt := 0
 			for i := range word {
 				if word[i] == letter[0] {
-					priUser = replaceAtIndex(priUser, letter , i)
-					if word == priUser {
+					showToUser = replaceAtIndex(showToUser, letter , i)
+					if word == showToUser {
 						return "Alive"
 					}
 				}else {
@@ -66,7 +73,7 @@ func hangman(player player.Player, word string) (string){
 			fmt.Println("Already entered letter  .....  ")	
 		}	
 
-		fmt.Println(priUser)
+		fmt.Println(showToUser)
 		
 		fmt.Println("Chance left are ", chance)
 	}
@@ -75,34 +82,37 @@ func hangman(player player.Player, word string) (string){
 
 
 func PlayGame(Game int) {
-	// TODO: check default value of seed and why words are not getting randomised
+	//DONE// TODO: check default value of seed and why words are not getting randomised
+	//Default value of seed is 1
+
 	var seedValue int64 = time.Now().UnixNano()
 	rand.Seed(seedValue)
+
 	var player player.Player
 	wordPool := []string{"GREEN", "BLUE", "RED", "WHITE", "YELLOW", "BLACK"}
 
 	fmt.Println("Enter the User Name : ")
 	fmt.Scan(&player.Name)
-	m[player] = wordPool[rand.Intn(5)]
+	PlayerGame[player] = wordPool[rand.Intn(6)]
 
-	Result := hangman(player, m[player])
+	Result := hangman(player, PlayerGame[player])
 
-	fmt.Println("You are ", Result , " Word is ", m[player])
+	fmt.Println("You are ", Result , " Word is ", PlayerGame[player])
 
-	//insert history :--
-	var playerH history.Game
+	//insert history :-----
+	var h history.Game
 
-	playerH.GameNo = Game
-	playerH.PlayerName = player.Name
-	playerH.Word = m[player]
+	h.GameNo = Game
+	h.PlayerName = player.Name
+	h.Word = PlayerGame[player]
 
-	h[playerH] = Result 
+	GameHistroy[h] = Result 
 }
 
 
 func CheckHistory() {
-	fmt.Println("--------Game History ------- ")
-	for key, value := range h {
+	fmt.Println("-------Game History -------")
+	for key, value := range GameHistroy {
 		fmt.Println(key.GameNo, " ", key.PlayerName, " ", key.Word, " ", value)
 	}
 	fmt.Println()
