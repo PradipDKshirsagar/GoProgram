@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	Game := 0
+	fmt.Println("Starting Application")
+	game := 0
 	for {
 		fmt.Println("------Hangman Game------")
 		option := 0
@@ -14,8 +15,8 @@ func main() {
 		fmt.Scan(&option)
 		switch option {
 			case 1 :
-				Game++
-				hangman.PlayGame(Game)
+				game++
+				hangman.PlayGame(game)
 			case 2 : 
 				hangman.CheckHistory()
 			default : 

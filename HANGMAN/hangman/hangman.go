@@ -1,11 +1,13 @@
 package hangman
 
 import ("strings"
+		"strconv"
 		"fmt"
 		"time" 
 		"math/rand"
 		"GoProgram/HANGMAN/history"
 		"GoProgram/HANGMAN/player"
+		"GoProgram/HANGMAN/config"
 		)
 
 var GameHistroy = map[history.Game]string{}
@@ -45,10 +47,13 @@ func hangman(player player.Player, word string) (string){
 	letter := ""
 	var inputLetter []string
 
+	conf, _ := config.LoadConfiguration("config.json")
+	//fmt.Println(conf.Chance)
+	CHANCE, _ := strconv.Atoi(conf.Chance)
+//	fmt.Println(CHANCE)
 	// try to find word
-
 	// TODO: use viper to pick this up from config file
-	for chance := 6; chance > 0;  {
+	for chance := CHANCE; chance > 0;  {
 		fmt.Println("Enter Letter :")
 		fmt.Scan(&letter)
 		letter = strings.ToUpper(letter)
@@ -84,7 +89,7 @@ func hangman(player player.Player, word string) (string){
 func PlayGame(Game int) {
 	//DONE// TODO: check default value of seed and why words are not getting randomised
 	//Default value of seed is 1
-
+	
 	var seedValue int64 = time.Now().UnixNano()
 	rand.Seed(seedValue)
 
