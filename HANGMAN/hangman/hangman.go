@@ -1,7 +1,6 @@
 package hangman
 
 import ("strings"
-		"strconv"
 		"fmt"
 		"time" 
 		"math/rand"
@@ -32,7 +31,7 @@ func hangman(player player.Player, word string) (string){
 	fmt.Println("Guess the Word ", player.Name, " :")
 	fmt.Print("Word is ")
 
-	
+
 	//DONE// TODO: update logic
 	/*for i := range word {
 		showToUser = strings.Replace(showToUser, string(showToUser[i]), "_", 1)
@@ -41,23 +40,29 @@ func hangman(player player.Player, word string) (string){
 	for i, length := 0, len(word) ; i < length ; i++ {
 		showToUser += "_"
 	}
-
 	fmt.Println(showToUser)
 	
+
 	letter := ""
 	var inputLetter []string
 
-	conf, _ := config.LoadConfiguration("config.json")
+	//conf, _ := config.LoadConfiguration("config.json")
 	//fmt.Println(conf.Chance)
-	CHANCE, _ := strconv.Atoi(conf.Chance)
-//	fmt.Println(CHANCE)
+	//CHANCE, _ := strconv.Atoi(conf.Chance)
+	//fmt.Println(CHANCE)
+	
+	//fetch from configuaration
+	var conf, _ = config.LoadConfiguration()
+	CHANCE := conf.Chance
+	//fmt.Println(CHANCE)
+	
+
 	// try to find word
 	// TODO: use viper to pick this up from config file
 	for chance := CHANCE; chance > 0;  {
 		fmt.Println("Enter Letter :")
 		fmt.Scan(&letter)
 		letter = strings.ToUpper(letter)
-		//fmt.Println(letter)
 		if !checkInputLetter(inputLetter, letter) {
 			cnt := 0
 			for i := range word {
@@ -84,7 +89,6 @@ func hangman(player player.Player, word string) (string){
 	}
 	return "Dead"
 }
-
 
 func PlayGame(Game int) {
 	//DONE// TODO: check default value of seed and why words are not getting randomised

@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct { 
-	Chance string `json:"chance"`
+	Chance string `json:"chance"` //read
 }
 
 func LoadConfiguration(filename string) (Config, error) {
