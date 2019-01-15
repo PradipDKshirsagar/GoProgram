@@ -1,19 +1,23 @@
 package hangman
 
-import ("strings"
-		"fmt"
-		"time" 
-		"math/rand"
-		"GoProgram/HANGMAN/history"
-		"GoProgram/HANGMAN/player"
-		"GoProgram/HANGMAN/config"
-		)
+import (
+	"strings"
+	"fmt"
+	"time" 
+	"os"
+	"bufio"
+	"math/rand"
+	"GoProgram/HANGMAN/history"
+	"GoProgram/HANGMAN/player"
+	"GoProgram/HANGMAN/config"
+)
 
 var GameHistroy = map[history.Game]string{}
-var PlayerGame = map[player.Player]string{}
+var GamePlayer = map[player.Player]string{}
+
 
 func checkInputLetter(inputLetter []string, letter string) bool {
-	for _, x :=range inputLetter {
+	for _, x := range inputLetter {
 		if x == letter {
 			return true
 		}
@@ -21,9 +25,11 @@ func checkInputLetter(inputLetter []string, letter string) bool {
 	return false 
 }
 
+
 func replaceAtIndex(str string, letter string, index int) string {
     return str[:index] + string(letter) + str[index+1:]
 }
+
 
 func hangman(player player.Player, word string) (string){
 	showToUser := ""
@@ -101,26 +107,35 @@ func PlayGame(Game int) {
 	wordPool := []string{"GREEN", "BLUE", "RED", "WHITE", "YELLOW", "BLACK"}
 
 	fmt.Println("Enter the User Name : ")
-	fmt.Scan(&player.Name)
-	PlayerGame[player] = wordPool[rand.Intn(6)]
+	reader := bufio.NewReader(os.Stdin)
+	for {
+		player.Name, _ = reader.ReadString('\n')
+		player.Name = strings.Replace(player.Name, "\n", "", 1) 
+		if player.Name == "" {
+			fmt.Println("Enter valid user name : ")
+		}else{
+			break
+		}
+	}
 
-	Result := hangman(player, PlayerGame[player])
+	GamePlayer[player] = wordPool[rand.Intn(6)]
 
-	fmt.Println("You are ", Result , " Word is ", PlayerGame[player])
+	Result := hangman(player, GamePlayer[player])
+
+	fmt.Println("You are ", Result , " Word is ", GamePlayer[player])
 
 	//insert history :-----
 	var h history.Game
 
 	h.GameNo = Game
 	h.PlayerName = player.Name
-	h.Word = PlayerGame[player]
+	h.Word = GamePlayer[player]
 
 	GameHistroy[h] = Result 
 }
 
-
 func CheckHistory() {
-	fmt.Println("-------Game History -------")
+	fmt.Println("------- Game History -------")
 	for key, value := range GameHistroy {
 		fmt.Println(key.GameNo, " ", key.PlayerName, " ", key.Word, " ", value)
 	}
