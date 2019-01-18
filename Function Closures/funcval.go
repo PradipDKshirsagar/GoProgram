@@ -18,5 +18,5 @@ func main() {
 	fmt.Println(hypot(5, 12))
 
 	fmt.Println(compute(hypot))
-	fmt.Println(compute(math.Pow))
+	fmt.Println(compute(math.Pow)
 }
